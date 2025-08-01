@@ -1,5 +1,5 @@
 {
-  "name": "@anilktjfrog/helm-viewer-fixed",
+  "name": "@anilktjfrog/helm-viewer",
   "version": "0.21.4",
   "description": "Quick tool to easily view your helm charts. Fixed version that properly handles --values flag.",
   "author": "anilktjfrog",
