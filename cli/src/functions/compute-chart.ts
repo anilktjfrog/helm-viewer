@@ -15,27 +15,27 @@ import { join } from "path";
 export async function computeChart(
   currentPath: string,
   releaseName: string,
-  valuesPathArray: Array<string> = [],
+  valuesPathArray: Array<string> = []
 ) {
   // eslint-disable-next-line prefer-const
   let { stdout, error } = await computeCommands(
     releaseName,
     valuesPathArray,
-    currentPath,
+    currentPath
   );
   if (error) {
     if (error.includes("You may need to run `helm dependency build`")) {
       console.log(
         chalk.greenBright(
-          `⬇️ Trying to refresh helm dependencies. Might be long...`,
-        ),
+          `⬇️ Trying to refresh helm dependencies. Might be long...`
+        )
       );
       const $$ = $({ cwd: currentPath });
       await $$`helm dependency build`;
       ({ stdout } = await computeCommands(
         releaseName,
         valuesPathArray,
-        currentPath,
+        currentPath
       ));
     }
 
@@ -59,7 +59,7 @@ export async function computeChart(
 }
 
 export async function computeTemplated(
-  chartInYaml: string,
+  chartInYaml: string
 ): Promise<{ templated: any }> {
   const dataFileJSON = { templated: {} };
   const files = chartInYaml.split("---");
@@ -83,43 +83,33 @@ type Result = {
 async function computeCommands(
   releaseName: string,
   valuesPathArray: Array<string> = [],
-  currentPath: string,
+  currentPath: string
 ): Promise<Result> {
   // https://github.com/helm/helm/issues/3553
   const namespace = "--namespace fake-namespace-ded";
 
+  // Build the values flags string
+  const valuesFlags =
+    valuesPathArray.length > 0
+      ? valuesPathArray.map((path) => `--values ${path}`).join(" ")
+      : "";
+
+  const command =
+    `helm template ${namespace} --name-template ${releaseName} ${currentPath} ${valuesFlags}`.trim();
+
   let stdout;
-  if (valuesPathArray.length === 0) {
-    try {
-      ({ stdout } = execaCommandSync(
-        `helm template ${namespace} --name-template ${releaseName} ${currentPath}`,
-      ));
-    } catch (err) {
-      return { error: (err as any).stderr as string };
-    }
-  } else if (valuesPathArray.length === 1) {
-    try {
-      ({ stdout } = execaCommandSync(
-        `helm template ${namespace} --name-template ${releaseName} ${currentPath}`,
-      ));
-    } catch (err) {
-      return { error: (err as any).stderr as string };
-    }
-  } else if (valuesPathArray.length === 2) {
-    try {
-      ({ stdout } = execaCommandSync(
-        `helm template ${namespace} --name-template ${releaseName} ${currentPath} --values ${valuesPathArray.at(0)} --values ${valuesPathArray.at(1)}`,
-      ));
-    } catch (err) {
-      return { error: (err as any).stderr as string };
-    }
+  try {
+    ({ stdout } = execaCommandSync(command));
+  } catch (err) {
+    return { error: (err as any).stderr as string };
   }
+
   return { stdout };
 }
 
 export async function computeSources(
   chartInYaml: string,
-  currentPath: string,
+  currentPath: string
 ): Promise<{ sources: any }> {
   const tmpDir = `${tmpdir()}/${randomUUID()}`;
   mkdirSync(tmpDir, { recursive: true });
