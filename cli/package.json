@@ -1,8 +1,8 @@
 {
-  "name": "helm-viewer",
-  "version": "0.21.3",
-  "description": "Quick tool to easily view your helm charts.",
-  "author": "Tchoupinax <corentinfiloche@hotmail.fr> (https://corentinfiloche.xyz)",
+  "name": "@anilktjfrog/helm-viewer-fixed",
+  "version": "0.21.4",
+  "description": "Quick tool to easily view your helm charts. Fixed version that properly handles --values flag.",
+  "author": "anilktjfrog",
   "license": "MIT",
   "type": "module",
   "bin": {
@@ -11,15 +11,17 @@
   "keywords": [
     "helm",
     "charts",
-    "helm chart"
+    "helm chart",
+    "fixed",
+    "values"
   ],
-  "homepage": "https://github.com/Tchoupinax/helm-viewer",
+  "homepage": "https://github.com/anilktjfrog/helm-viewer",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Tchoupinax/helm-viewer.git"
+    "url": "git+https://github.com/anilktjfrog/helm-viewer.git"
   },
   "bugs": {
-    "url": "https://github.com/Tchoupinax/helm-viewer/issues"
+    "url": "https://github.com/anilktjfrog/helm-viewer/issues"
   },
   "scripts": {
     "lint": "yarn lint:eslint && yarn lint:prettier",
