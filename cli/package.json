@@ -1,6 +1,6 @@
 {
   "name": "@anilktjfrog/helm-viewer",
-  "version": "0.21.4",
+  "version": "0.21.5",
   "description": "Quick tool to easily view your helm charts. Fixed version that properly handles --values flag.",
   "author": "anilktjfrog",
   "license": "MIT",
@@ -22,6 +22,9 @@
   },
   "bugs": {
     "url": "https://github.com/anilktjfrog/helm-viewer/issues"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
   },
   "scripts": {
     "lint": "yarn lint:eslint && yarn lint:prettier",
