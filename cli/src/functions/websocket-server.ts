@@ -4,7 +4,7 @@ import { WebSocketServer } from "ws";
 import { helmChartModifiedEvent } from "../events/helm-chart-modified";
 import { computeChart } from "./compute-chart";
 
-export function startWebsocketServer(currentPath: string, releaseName: string) {
+export function startWebsocketServer(currentPath: string, releaseName: string, valuesPathArray: Array<string> = []) {
   const wss = new WebSocketServer({ port: 12096 });
 
   console.log(chalk.cyanBright(`⚡️ Web socket started on 12096`));
@@ -19,7 +19,7 @@ export function startWebsocketServer(currentPath: string, releaseName: string) {
 
     helmChartModifiedEvent.addListener("changed", async (filePath: string) => {
       try {
-        const payload = await computeChart(currentPath, releaseName);
+        const payload = await computeChart(currentPath, releaseName, valuesPathArray);
         ws.send(
           JSON.stringify({
             filePath,

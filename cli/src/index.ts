@@ -43,13 +43,13 @@ async function run() {
 
   # When you are in a chart helm folder
   helm-viewer
-  
+
   # To target a specific path
   helm-viewer path/of/the/chart
-  
+
   # To compute the chart with an external values file
   helm-viewer path/of/the/chart --values path/of/the/values/file1 --values path/of/the/values/file2
-  
+
   # To get a public link (with encrypted data)
   helm-viewer path/of/the/chart --push
     `);
@@ -113,7 +113,8 @@ async function run() {
       currentPath,
       args.values.watch,
       browser,
-      args.values.name
+      args.values.name,
+      valuesPathArray
     );
   }
 
@@ -161,7 +162,8 @@ async function serveLocally(
   currentPath: string,
   watchingMode: boolean,
   browserName: BrowserName,
-  releaseName: string
+  releaseName: string,
+  valuesPathArray: Array<string> = []
 ) {
   const id = nanoid();
   if (process.env.NODE_ENV === "development") {
@@ -185,7 +187,7 @@ async function serveLocally(
   ]);
 
   if (watchingMode) {
-    startWebsocketServer(currentPath, releaseName);
+    startWebsocketServer(currentPath, releaseName, valuesPathArray);
     watchHelmChartFilesModifications(currentPath);
     await new Promise((resolve) => setTimeout(resolve, 1e8));
   }
